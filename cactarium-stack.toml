@@ -13,16 +13,17 @@
 # ET_2026_05 release line, and later updates on that line are v2026.5.1, v2026.5.2, ... (the
 # last number counts this stack's own updates, not the ET's vN).
 #
-# This commit is the release tagged v2026.5.0.
-# pin-tag pins every repo that has an ET_2026_05_v0 tag at that tag (the base's repos all have
-# it), so for the repos it shares with et/et-stack@2026.5.0 this release is that release, commit
-# for commit. Cottonmouth and AsterX carry no tags, so they are pinned below by commit:
-# Cottonmouth at 7b3a6b1 (2026-06-05, the tip of its ET_2026_05 branch when the ET release was
-# tagged on 2026-06-08, and still today), AsterX at 7e70efa (2025-10-03, the tip of its main
-# branch, also its USET_2026 branch).
+# Nothing is pinned here: @head follows the branches cottonmouth.th names, while the base's
+# repos keep et/carpetx-stack@2026.5.0's pins until `extends` names a newer base release. Each
+# tag freezes those branch heads at the moment it is pushed. The first release (2026.5.0) pinned
+# Cottonmouth and AsterX by commit and every other repo at its ET_2026_05_v0 tag; see the commit
+# that tag points at.
 #
-# The next commit on this branch drops pin-tag and those pins: from then on @head follows the
-# branches the thornlist names, and a future tag freezes their heads at that moment.
+# To hold one repo back when tagging, pin it first:
+#
+#     [[stack.pin]]
+#     name = "CarpetX"            # the repo's name as the thornlist derives it
+#     tag = "ET_2026_05_v0"       # or commit = "<40 hex digits>"
 format = 1
 
 [stack]
@@ -41,16 +42,4 @@ contact = "https://github.com/EinsteinToolkit/tickets/issues"
 extends = ["et/carpetx-stack@2026.5.0"]
 thornlist = "cottonmouth.th"
 enable = ["CarpetX/Algo", "ExternalLibraries/Boost"]
-pin-tag = "ET_2026_05_v0"
 
-[[stack.pin]]
-name = "Cottonmouth"
-url = "https://github.com/EinsteinToolkit/Cottonmouth"
-ref = "ET_2026_05"
-commit = "7b3a6b19bb6278d7ae9205bce817042c253a9591"
-
-[[stack.pin]]
-name = "AsterX"
-url = "https://github.com/EinsteinToolkit/AsterX"
-ref = "main"
-commit = "7e70efa181cec5936be375ae8e7c146aaa3d7085"
