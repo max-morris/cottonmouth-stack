@@ -1,0 +1,56 @@
+# The Cactarium stack et/cottonmouth-stack: et/carpetx-stack plus what Cottonmouth codes need.
+# The name avoids a clash with the package et/cottonmouth (the Cottonmouth repo itself).
+#
+# A recipe: the base release first, then the sections in cottonmouth.th on top. AsterX's
+# Con2PrimFactory needs CarpetX/Algo, which needs Boost; the base fetches both without building
+# them, so `enable` turns them on.
+#
+# One stack, no tracks: the BSSNOK and Z4c thorns have different names and build side by side,
+# and the stencil order is part of the thorn name (the 4 in CottonmouthZ4c4m), so other orders
+# would also coexist with these rather than replace them.
+#
+# Tags cut releases, numbered by Einstein Toolkit release: v2026.5.0 is the first, on the
+# ET_2026_05 release line, and later updates on that line are v2026.5.1, v2026.5.2, ... (the
+# last number counts this stack's own updates, not the ET's vN).
+#
+# This commit is the release tagged v2026.5.0.
+# pin-tag pins every repo that has an ET_2026_05_v0 tag at that tag (the base's repos all have
+# it), so for the repos it shares with et/et-stack@2026.5.0 this release is that release, commit
+# for commit. Cottonmouth and AsterX carry no tags, so they are pinned below by commit:
+# Cottonmouth at 7b3a6b1 (2026-06-05, the tip of its ET_2026_05 branch when the ET release was
+# tagged on 2026-06-08, and still today), AsterX at 7e70efa (2025-10-03, the tip of its main
+# branch, also its USET_2026 branch).
+#
+# The next commit on this branch drops pin-tag and those pins: from then on @head follows the
+# branches the thornlist names, and a future tag freezes their heads at that moment.
+format = 1
+
+[stack]
+name = "cottonmouth-stack"
+owners = ["et"]
+description = """
+Build and run Cottonmouth codes (BSSNOK and Z4c, 4th order, with matter) on CarpetX.
+
+et/carpetx-stack plus the Cottonmouth thorns (CottonmouthBSSNOK4m, CottonmouthZ4c4m and two \
+test initial data thorns), TwoPuncturesX for binary black hole initial data, CanudaX_NPScalars \
+for Psi4, and the AsterX GRMHD thorns with TOVSolverX: everything Cottonmouth's examples \
+activate (the qc0 binary black holes and the magnetized TOV star). Both formulations are built; \
+ActiveThorns picks one.
+"""
+contact = "https://github.com/EinsteinToolkit/tickets/issues"
+extends = ["et/carpetx-stack@2026.5.0"]
+thornlist = "cottonmouth.th"
+enable = ["CarpetX/Algo", "ExternalLibraries/Boost"]
+pin-tag = "ET_2026_05_v0"
+
+[[stack.pin]]
+name = "Cottonmouth"
+url = "https://github.com/EinsteinToolkit/Cottonmouth"
+ref = "ET_2026_05"
+commit = "7b3a6b19bb6278d7ae9205bce817042c253a9591"
+
+[[stack.pin]]
+name = "AsterX"
+url = "https://github.com/EinsteinToolkit/AsterX"
+ref = "main"
+commit = "7e70efa181cec5936be375ae8e7c146aaa3d7085"

@@ -1,0 +1,88 @@
+# cottonmouth.th: what Cottonmouth adds on top of et/carpetx-stack.
+#
+# The stack et/cottonmouth-stack (cactarium-stack.toml next to this file; the name avoids a clash
+# with the package et/cottonmouth) extends et/carpetx-stack with these sections: the Cottonmouth
+# thorns, the initial data and Psi4 thorns its vacuum examples (qc0-bssnok.par, qc0-z4c.par in the
+# Cottonmouth repo's examples/) activate, and the AsterX GRMHD thorns its magnetized TOV star
+# example (mag_TOV.par) activates. Everything else those parfiles need (CarpetX, BoxInBox,
+# AHFinderDirect, Multipole, PunctureTracker, AEILocalInterp, ...) comes from et/carpetx-stack;
+# AsterX also needs CarpetX/Algo and ExternalLibraries/Boost, which that stack fetches but does
+# not build, so cactarium-stack.toml enables them.
+#
+# Both formulations are built: CottonmouthBSSNOK4m and CottonmouthZ4c4m have distinct thorn
+# names and coexist in one build; a parfile picks one in ActiveThorns.
+#
+# Every repo but AsterX follows the Einstein Toolkit's ET_2026_05 release branch, as in the
+# release's own Cottonmouth section. AsterX is in no Einstein Toolkit release, so it follows its
+# main branch. Neither Cottonmouth nor AsterX carries tags; the first release (2026.5.0) pinned
+# both by commit and every other repo here at its ET_2026_05_v0 tag.
+
+!CRL_VERSION = 1.0
+
+!DEFINE ROOT = Cactus
+!DEFINE ARR  = $ROOT/arrangements
+!DEFINE COMPONENTLIST_TARGET = $ROOT/thornlists/
+
+!DEFINE ET_RELEASE = ET_2026_05
+
+
+# Cottonmouth
+!TARGET   = $ARR
+!TYPE     = git
+!URL      = https://github.com/EinsteinToolkit/Cottonmouth
+!REPO_BRANCH = $ET_RELEASE
+!REPO_PATH= $2
+!CHECKOUT =
+Cottonmouth/CottonmouthBSSNOK4m
+Cottonmouth/CottonmouthGaugeWaveID
+Cottonmouth/CottonmouthLinearWaveID
+Cottonmouth/CottonmouthZ4c4m
+
+
+# Initial data: binary black holes (the release's TwoPuncturesX, in EinsteinInitialData)
+!TARGET   = $ARR
+!TYPE     = git
+!URL      = https://bitbucket.org/einsteintoolkit/einsteininitialdata.git
+!REPO_BRANCH = $ET_RELEASE
+!REPO_PATH= $2
+!CHECKOUT =
+EinsteinInitialData/TwoPuncturesX
+
+
+# Psi4 on CarpetX. CanudaX_NPScalars reads a parameter of CanudaX_BSSNMoL (param.ccl SHARES), so
+# that thorn must be built too, though a Cottonmouth parfile never activates it.
+!TARGET    = $ARR
+!TYPE      = git
+!URL       = https://bitbucket.org/canuda/canudax.git
+!REPO_BRANCH = $ET_RELEASE
+!REPO_PATH = $2
+!CHECKOUT =
+CanudaX/CanudaX_BSSNMoL
+CanudaX/CanudaX_NPScalars
+
+
+# External libraries: GSL, which TwoPuncturesX requires
+!TARGET   = $ARR
+!TYPE     = git
+!URL      = https://github.com/EinsteinToolkit/$1-$2
+!REPO_BRANCH = $ET_RELEASE
+!REPO_PATH = ../$1-$2
+!CHECKOUT =
+ExternalLibraries/GSL
+
+
+# AsterX: GRMHD on CarpetX, for mag_TOV.par (in no Einstein Toolkit release; main branch)
+!TARGET    = $ARR
+!TYPE      = git
+!URL       = https://github.com/EinsteinToolkit/AsterX
+!REPO_BRANCH = main
+!REPO_PATH = $2
+!CHECKOUT  =
+AsterX/AsterMasks
+AsterX/AsterSeeds
+AsterX/AsterUtils
+AsterX/AsterX
+AsterX/Con2PrimFactory
+AsterX/EOSX
+AsterX/ReconX
+AsterX/TOVSolverX
