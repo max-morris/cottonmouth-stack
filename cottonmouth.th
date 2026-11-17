@@ -39,14 +39,18 @@ Cottonmouth/CottonmouthLinearWaveID
 Cottonmouth/CottonmouthZ4c4m
 
 
-# Initial data: binary black holes (the release's TwoPuncturesX, in EinsteinInitialData)
+# Initial data: binary black holes. SpacetimeX's TwoPuncturesX, the self-contained CarpetX port
+# the Cottonmouth examples activate; et/carpetx-stack fetches SpacetimeX but does not build it.
+# Not EinsteinInitialData/TwoPuncturesX: that one compiles TwoPunctures' own sources (it
+# includes TP_Guts.h) and so needs EinsteinInitialData/TwoPunctures built beside it, which in
+# turn inherits ADMBase, StaticConformal and grid, none of which a CarpetX build has.
 !TARGET   = $ARR
 !TYPE     = git
-!URL      = https://bitbucket.org/einsteintoolkit/einsteininitialdata.git
+!URL      = https://github.com/EinsteinToolkit/SpacetimeX
 !REPO_BRANCH = $ET_RELEASE
 !REPO_PATH= $2
 !CHECKOUT =
-EinsteinInitialData/TwoPuncturesX
+SpacetimeX/TwoPuncturesX
 
 
 # Psi4 on CarpetX. CanudaX_NPScalars reads a parameter of CanudaX_BSSNMoL (param.ccl SHARES), so
